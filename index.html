@@ -1,37 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LINE Login and AppSheet</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINE Login and AppSheet</title>
+    <script src="https://static.line-scdn.net/liff/edge/latest/sdk.js"></script>
 </head>
 <body>
-  <script src="https://static.line-scdn.net/liff/edge/latest/sdk.js"></script>
-  <script>
-    async function main() {
-      try {
-        await liff.init({ liffId: '2006993723-gA7oeYGx' });
-        // liff.init()が成功した場合の処理
-        liff.ready.then(() => {
-          // liff.init()はここでは呼び出さない
-          liff.getContext().viewType; // Tallサイズに設定
-        });
-        if (liff.isLoggedIn()) {
-          const profile = await liff.getProfile();
-          const userId = profile.userId;
+    <script>
+        async function main() {
+            try {
+                await liff.init({ liffId: '2006993723-gA7oeYGx', context: { viewType: 'tall' } }); // Tallサイズを指定
+                liff.ready.then(() => {
+                    console.log("LIFF ready"); // LIFFの準備完了を確認
+                    // ここで画面サイズなどの処理を行う
+                });
+                if (liff.isLoggedIn()) {
+                    const profile = await liff.getProfile();
+                    const userId = profile.userId;
 
-          const appsheetUrl = 'https://www.appsheet.com/start/fe43f7c0-9cd9-4f4a-8c7d-c4170f990c4b' + (window.location.search ? '&' : '?') + 'userId=' + userId;
+                    const appsheetUrl = 'https://www.appsheet.com/start/fe43f7c0-9cd9-4f4a-8c7d-c4170f990c4b' + (window.location.search ? '&' : '?') + 'userId=' + userId;
 
-          window.location.href = appsheetUrl;
-        } else {
-          liff.login();
+                    window.location.href = appsheetUrl;
+                } else {
+                    liff.login();
+                }
+            } catch (error) {
+                console.error("LIFF initialization failed:", error, error.stack);
+            }
         }
-      } catch (error) {
-        // liff.init()が失敗した場合の処理
-        console.error("LIFF initialization failed:", error);
-      }
-    }
-    main();
-  </script>
+        main();
+    </script>
 </body>
 </html>
