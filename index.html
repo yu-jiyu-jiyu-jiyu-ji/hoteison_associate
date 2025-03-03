@@ -6,20 +6,26 @@
   <title>LINE Login and AppSheet</title>
 </head>
 <body>
-  <script src="https://static.line-scdn.net/liff/edge/2.0/sdk.js"></script>
+  <script src="https://static.line-scdn.net/liff/edge/latest/sdk.js"></script>
   <script>
     async function main() {
-      await liff.init({ liffId: '2006951210-Mw1gnvyE' }); // 正しいLIFF IDを設定
+      try {
+        await liff.init({ liffId: '2006951210-Mw1gnvyE' });
+        liff.ready.then(() => {
+          liff.init({ context: { viewType: 'tall' } }); // Tallサイズに設定
+        });
+        if (liff.isLoggedIn()) {
+          const profile = await liff.getProfile();
+          const userId = profile.userId;
 
-      if (liff.isLoggedIn()) {
-        const profile = await liff.getProfile();
-        const userId = profile.userId;
+          const appsheetUrl = 'https://www.appsheet.com/start/fe43f7c0-9cd9-4f4a-8c7d-c4170f990c4b' + (window.location.search ? '&' : '?') + 'userId=' + userId;
 
-        const appsheetUrl = 'https://www.appsheet.com/start/fe43f7c0-9cd9-4f4a-8c7d-c4170f990c4b' + (window.location.search ? '&' : '?') + 'userId=' + userId;
-
-        window.location.href = appsheetUrl;
-      } else {
-        liff.login();
+          window.location.href = appsheetUrl;
+        } else {
+          liff.login();
+        }
+      } catch (error) {
+        console.error("LIFF initialization failed:", error);
       }
     }
     main();
