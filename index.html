@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AppSheet in LIFF</title>
+</head>
+<body>
+  <iframe id="appsheetFrame" width="100%" height="600px" frameborder="0" src="https://www.appsheet.com/start/fe43f7c0-9cd9-4f4a-8c7d-c4170f990c4b"></iframe>
+
+  <script src="https://static.line-scdn.net/liff/edge/2.0/sdk.js"></script>
+  <script>
+    async function main() {
+      await liff.init({ liffId: '2006911954' });
+
+      if (liff.isLoggedIn()) {
+        const profile = await liff.getProfile();
+        const userId = profile.userId;
+
+        // AppSheetにuserIdを渡す例（URLパラメータ）
+        const appsheetFrame = document.getElementById('appsheetFrame');
+        const appsheetUrl = appsheetFrame.src;
+        appsheetFrame.src = appsheetUrl + (appsheetUrl.includes('?') ? '&' : '?') + 'userId=' + userId;
+
+        //userIdを使った処理を記述する。
+        console.log("userId:",userId);
+
+      } else {
+        liff.login();
+      }
+    }
+    main();
+  </script>
+</body>
+</html>
