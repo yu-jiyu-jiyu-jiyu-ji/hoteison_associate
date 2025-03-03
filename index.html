@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINE Login and AppSheet</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINE Login and AppSheet</title>
 </head>
 <body>
-    <script src="https://static.line-scdn.net/liff/edge/2.0/sdk.js"></script>
-    <script>
-        async function main() {
-            await liff.init({ liffId: '2006951210-Mw1gnvyE' });
+  <script src="https://static.line-scdn.net/liff/edge/2.0/sdk.js"></script>
+  <script>
+    async function main() {
+      await liff.init({ liffId: '2006951210-Mw1gnvyE' }); // 正しいLIFF IDを設定
 
-            if (liff.isLoggedIn()) {
-                const profile = await liff.getProfile();
-                const userId = profile.userId;
+      if (liff.isLoggedIn()) {
+        const profile = await liff.getProfile();
+        const userId = profile.userId;
 
-                // AppSheet URLにuserIdを付加
-                const appsheetUrl = 'https://www.appsheet.com/start/fe43f7c0-9cd9-4f4a-8c7d-c4170f990c4b' + (window.location.search ? '&' : '?') + 'userId=' + userId;
+        const appsheetUrl = 'https://www.appsheet.com/start/fe43f7c0-9cd9-4f4a-8c7d-c4170f990c4b' + (window.location.search ? '&' : '?') + 'userId=' + userId;
 
-                // AppSheetにリダイレクト
-                window.location.href = appsheetUrl;
-            } else {
-                liff.login();
-            }
-        }
-        main();
-    </script>
+        window.location.href = appsheetUrl;
+      } else {
+        liff.login();
+      }
+    }
+    main();
+  </script>
 </body>
 </html>
